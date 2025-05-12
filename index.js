@@ -1,18 +1,21 @@
-import { express } from 'express';
-import { ollama } from '@langchain/community/llms/ollama'
+//import { express } from 'express';
+const express = require('express');
+const { Ollama } = require('@langchain/community/llms/ollama');
 const app = express()
 const port = 8700
-const model = new ollama({
+const model = new Ollama({
   bacUrl: 'http://localhost:11434',
-  model: 'deepseek-r1' 
+  model: 'deepseek-r1:14b'
 })
 
 app.get('/test', async () => {
-  const stream = await model.stream('你是谁')
-
+  const streams = await model.stream('you name')
+  for await (const stream of streams) {
+    console.log("ssss", stream)
+  }
 })
 
-app.listern(port, () => {
+app.listen(port, () => {
   
 })
 
